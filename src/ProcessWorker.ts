@@ -1,8 +1,9 @@
 import { LinkedProcess } from "./LinkedProcess";
+import { Status, StatusType } from "./types";
 
 export class ProcessWorker {
     
-    private status: string = "idle";
+    private status: Status = StatusType.IDLE;
     private linkedProcess: LinkedProcess | null = null
 
     constructor(private id: number) {}
@@ -28,9 +29,9 @@ export class ProcessWorker {
 
     async execute(...args: any) {
         if(!this.linkedProcess) return;
-        this.status = "inprogress";
+        this.status = StatusType.INPROGRESS;
         const result = await this.linkedProcess.process(...args);
-        this.status = "completed";
+        this.status = StatusType.COMPLETED;
         return result;
     }
 }
