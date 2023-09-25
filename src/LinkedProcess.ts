@@ -41,7 +41,7 @@ export class LinkedProcess {
                     }, this.timeout);
                 })
             }
-            const process = async () => await this.fn(...args);
+            const process = async () => this.fn(...args);
             this.status = StatusType.INPROGRESS;
             const result = new Promise<ProcessResp>((resolve) => {
                 Promise.race([
