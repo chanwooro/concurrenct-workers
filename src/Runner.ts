@@ -85,8 +85,13 @@ export class Runner {
     }
 
     public async execute() {
-        const results = await this.processWorkers();
-        return results;
+        try{
+            const results = await this.processWorkers();
+            return results;
+        }
+        catch(e) {
+            throw new Error(`Something went wrong while processing workers ${e}`)
+        }
     }
 }
 

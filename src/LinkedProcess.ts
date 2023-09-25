@@ -45,24 +45,38 @@ export class LinkedProcess {
             this.status = StatusType.INPROGRESS;
             const result = new Promise<ProcessResp>((resolve) => {
                 Promise.race([
-                    process().then((data) => {
-                        clearTimeout(timer);
-                        resolve({
-                            status: "succeed",
-                            data
+                    process()
+                        .then((data) => {
+                            clearTimeout(timer);
+                            resolve({
+                                status: "succeed",
+                                data
+                            })
                         })
-                    }), 
-                    timeoutFallback?.then((data) => {
-                        resolve({
-                            status: "failed",
-                            data
+                        .catch(e => {
+                            resolve({
+                                status: "failed",
+                                data: e
+                            })
+                        }), 
+                    timeoutFallback
+                        ?.then((data) => {
+                            resolve({
+                                status: "failed",
+                                data
+                            })
                         })
-                    })
+                        ?.catch((e) => {
+                            resolve({
+                                status: "failed",
+                                data: e
+                            })
+                        })
                 ]);
             })    
             return result.then((data: ProcessResp) => {
                 this.result = data;
-                this.status = StatusType.COMPLETED;
+                this.status = data.status === "succeed" ? StatusType.COMPLETED : StatusType.ERROR;
             });
         }
         catch(e) {
