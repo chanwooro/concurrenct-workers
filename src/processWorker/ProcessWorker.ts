@@ -1,5 +1,5 @@
-import { LinkedProcess } from "./LinkedProcess";
-import { Status, StatusType } from "./types";
+import { LinkedProcess } from "../linkedProcess/LinkedProcess";
+import { Status, StatusType } from "../types";
 
 export class ProcessWorker {
     

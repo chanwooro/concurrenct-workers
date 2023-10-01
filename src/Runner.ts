@@ -1,7 +1,5 @@
-import { LinkedProcess } from "./LinkedProcess";
-import { LinkedProcessManager } from "./LinkedProcessManager";
-import { ProcessWorker } from "./ProcessWorker";
-import { ProcessWorkersManager } from "./ProcessWorkersManager";
+import { LinkedProcess, LinkedProcessManager } from "./linkedProcess";
+import { ProcessWorker, ProcessWorkersManager } from "./processWorker";
 
 export class Runner {
     private workersManager: ProcessWorkersManager;

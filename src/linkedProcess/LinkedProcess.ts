@@ -1,4 +1,4 @@
-import { Status, StatusType } from "./types";
+import { Status, StatusType } from "../types";
 
 type RespStatus = "succeed" | "failed";
 type ProcessResp = {
