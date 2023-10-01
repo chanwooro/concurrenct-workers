@@ -1,10 +1,11 @@
 import { LinkedProcess } from "./LinkedProcess";
+import { LinkedProcessManager } from "./LinkedProcessManager";
 import { ProcessWorker } from "./ProcessWorker";
 import { ProcessWorkersManager } from "./ProcessWorkersManager";
 
 export class Runner {
-    private linkedProcessList: LinkedProcess[] = [];
     private workersManager: ProcessWorkersManager;
+    private linkedProcessManager: LinkedProcessManager;
     private lastProcess: LinkedProcess | null = null;
     private status: "idle" | "no_more_processes" = "idle";
 
@@ -26,21 +27,13 @@ export class Runner {
     }
 
     private generateLinkedProcesses(callbacks: any[]) {
-        const list: LinkedProcess[] = [];
-        let prevCallback: LinkedProcess | null = null;
-        for(const fn of callbacks) {
-            const linkedProcess = new LinkedProcess(fn, this.timeout);
-            list.push(linkedProcess);
-            if(prevCallback) {
-                prevCallback.nextProcess = linkedProcess;
-            }
-            prevCallback = linkedProcess;
-        }
-        this.linkedProcessList = list;
+        this.linkedProcessManager = new LinkedProcessManager(callbacks, this.timeout)
+        this.linkedProcessManager.createProcesses();
     }
 
     private getNextAvailableProcessToWorker() {
-        let nextProcess = this.lastProcess === null ? this.linkedProcessList[0] : this.lastProcess?.nextProcess;
+        const _linkedProcessList = this.linkedProcessManager.getProcesses();
+        let nextProcess = this.lastProcess === null ? _linkedProcessList[0] : this.lastProcess?.nextProcess;
         while(nextProcess && nextProcess.getWorkerId()) {
             nextProcess = nextProcess.nextProcess;
         }
@@ -54,7 +47,7 @@ export class Runner {
         // Each worker will run recurssively until there's no processes to execute
         
         //debugging
-        const availableProcess = this.linkedProcessList.map((x) => x.getStatus() === "idle");
+        const availableProcess = this.linkedProcessManager.getProcesses().map((x) => x.getStatus() === "idle");
         console.log("availableProcess: ", availableProcess)
         console.log("workerId: ", worker.getId())
 
@@ -81,7 +74,7 @@ export class Runner {
     }
 
     public getResults() {
-        return this.linkedProcessList.map((x) => x.getResult())
+        return this.linkedProcessManager.getProcesses().map((x) => x.getResult())
     }
 
     public async execute() {
