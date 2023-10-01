@@ -30,7 +30,7 @@ export class LinkedProcess {
         return this.workerId;
     }
 
-    async process(...args: any) {
+    async process() {
         try {
             let timeoutFallback: Promise<any>;
             let timer: any = null;
@@ -41,19 +41,17 @@ export class LinkedProcess {
                     }, this.timeout);
                 })
             }
-            const process = async () => this.fn(...args);
             this.status = StatusType.INPROGRESS;
             const result = new Promise<ProcessResp>((resolve) => {
                 Promise.race([
-                    process()
-                        .then((data) => {
+                    this.fn.then((data: any) => {
                             clearTimeout(timer);
                             resolve({
                                 status: "succeed",
                                 data
                             })
                         })
-                        .catch(e => {
+                        .catch((e: any) => {
                             resolve({
                                 status: "failed",
                                 data: e
@@ -74,9 +72,10 @@ export class LinkedProcess {
                         })
                 ]);
             })    
-            return result.then((data: ProcessResp) => {
+            return await result.then((data: ProcessResp) => {
                 this.result = data;
                 this.status = data.status === "succeed" ? StatusType.COMPLETED : StatusType.ERROR;
+                return data;
             });
         }
         catch(e) {

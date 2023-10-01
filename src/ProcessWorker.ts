@@ -27,10 +27,10 @@ export class ProcessWorker {
         return this.status;
     }
 
-    async execute(...args: any) {
+    async execute() {
         if(!this.linkedProcess) return;
         this.status = StatusType.INPROGRESS;
-        const result = await this.linkedProcess.process(...args);
+        const result = await this.linkedProcess.process();
         this.status = StatusType.COMPLETED;
         return result;
     }
