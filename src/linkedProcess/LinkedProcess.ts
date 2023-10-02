@@ -44,7 +44,7 @@ export class LinkedProcess {
             this.status = StatusType.INPROGRESS;
             const result = new Promise<ProcessResp>((resolve) => {
                 Promise.race([
-                    this.fn.then((data: any) => {
+                    this.fn().then((data: any) => {
                             clearTimeout(timer);
                             resolve({
                                 status: "succeed",

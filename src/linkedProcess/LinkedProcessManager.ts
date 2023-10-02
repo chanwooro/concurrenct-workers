@@ -3,7 +3,7 @@ import { LinkedProcess } from "./LinkedProcess";
 export class LinkedProcessManager {
   private linkedProcesses: LinkedProcess[];
   
-  constructor(private callbacks: any[], private timeout?: number) {}
+  constructor(private callbacks: Array<() => Promise<any>>, private timeout?: number) {}
 
   createProcesses() {
     const list: LinkedProcess[] = [];
