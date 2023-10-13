@@ -17,7 +17,8 @@
       "resolveJsonModule": true,
       "strictPropertyInitialization": false,
       "allowUnusedLabels": true,
-      "outDir": "dist/module",
+      "declaration": true,
+      "outDir": "dist/main",
       "typeRoots": [
         "node_modules/@types",
         "types"
