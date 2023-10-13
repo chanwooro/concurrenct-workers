@@ -1,0 +1,9 @@
+{
+  "hooks": {
+    "before:init": ["npm run build"]
+  },
+  "git": {
+    "commitMessage": "Releasing ${name}@${version}",
+    "tag": true
+  }
+}
