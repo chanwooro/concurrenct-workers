@@ -16,7 +16,19 @@
       "forceConsistentCasingInFileNames": true,
       "resolveJsonModule": true,
       "strictPropertyInitialization": false,
-      "allowUnusedLabels": true
+      "allowUnusedLabels": true,
+      "outDir": "dist/module",
+      "typeRoots": [
+        "node_modules/@types",
+        "types"
+      ],
+      "types": [
+        "node"
+      ]
     },
+    "include": [
+      "./index.ts",
+      "./src/**/*.ts"
+    ],
     "exclude": ["node_modules"]
   }
